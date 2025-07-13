@@ -1,0 +1,166 @@
+Golang File Handling Mastery 
+Part 1:             
+Basics of File I/O 
+Opening a File 
+f
+ ile, err := os.Open("example.txt") // Read-only 
+f
+ ile, err := os.Create("example.txt") // Creates or truncates 
+Reading From a File 
+data, err := ioutil.ReadFile("example.txt") 
+fmt.Println(string(data)) 
+Or line-by-line (for big files): 
+scanner := bufio.NewScanner(file) 
+for scanner.Scan() { 
+fmt.Println(scanner.Text()) 
+} 
+Writing to a File 
+err := ioutil.WriteFile("example.txt", []byte("Hello, Go!"), 0644) 
+Or writing via bufio.Writer: 
+writer := bufio.NewWriter(file) 
+writer.WriteString("Buffered write\n") 
+writer.Flush() 
+Always Check Errors 
+if err != nil { 
+log.Fatal(err) 
+} 
+Don't Forget to Close 
+defer file.Close() 
+Pro tip: Use defer right after opening the file to ensure closure—even 
+if a panic happens. 
+Part 2: File Modes, Buffering, JSON, CSV, and Logging 
+Golang File Handling Mastery 
+Part 2:     
+Intermediate File Handling 
+File Modes (With os.OpenFile) 
+f
+ ile, err := os.OpenFile("example.txt", 
+os.O_RDWR|os.O_APPEND|os.O_CREATE, 0644) 
+Flag 
+Meaning 
+os.O_RDONLY Read only 
+os.O_WRONLY Write only 
+os.O_RDWR Read/Write 
+os.O_APPEND Append to file 
+os.O_CREATE Create if not exists 
+os.O_TRUNC Truncate file when opened 
+Reading/Writing JSON 
+type User struct { 
+Name  string `json:"name"` 
+Email string `json:"email"` 
+} 
+data := User{"Mona", "mona@example.com"} 
+// Encode JSON 
+json.NewEncoder(file).Encode(data) 
+// Decode JSON 
+json.NewDecoder(file).Decode(&data) 
+Working with CSV Files 
+writer := csv.NewWriter(file) 
+writer.Write([]string{"Name", "Email"}) 
+writer.Flush() 
+Reading CSV: 
+reader := csv.NewReader(file) 
+records, err := reader.ReadAll() 
+Logging to Files 
+logFile, _ := os.OpenFile("logfile.log", 
+os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666) 
+log.SetOutput(logFile) 
+log.Println("App started...") 
+Golang File Handling Mastery 
+Part 3:         
+Progress 
+Advanced Techniques — Large Files, Streaming & 
+Smart Strategy for Huge Files 
+Reading a massive file into memory?       
+by-line or chunk-by-chunk. 
+f
+ ile, err := os.Open("large.txt") 
+defer file.Close() 
+scanner := bufio.NewScanner(file) 
+for scanner.Scan() { 
+process(scanner.Text()) 
+} 
+For binary or chunked reading: 
+buffer := make([]byte, 4096) 
+for { 
+n, err := file.Read(buffer) 
+if err == io.EOF { 
+break 
+Bad idea. Instead, go line
+} 
+process(buffer[:n]) 
+} 
+Pipelining with io.Pipe 
+This is great for streaming between goroutines without temp files: 
+reader, writer := io.Pipe() 
+go func() { 
+defer writer.Close() 
+writer.Write([]byte("Streaming Data")) 
+}() 
+io.Copy(os.Stdout, reader) 
+File Copy with Progress Indicator 
+src, _ := os.Open("big.iso") 
+dst, _ := os.Create("copy.iso") 
+defer src.Close() 
+defer dst.Close() 
+info, _ := src.Stat() 
+totalSize := info.Size() 
+var copied int64 
+buf := make([]byte, 1024*1024) 
+for { 
+n, err := src.Read(buf) 
+if err == io.EOF { break } 
+dst.Write(buf[:n]) 
+copied += int64(n) 
+fmt.Printf("\rProgress: %.2f%%", 
+f
+ loat64(copied)*100/float64(totalSize)) 
+} 
+High-Performance File Processing Tips 
+• Use bufio.Writer / Reader to reduce syscall overhead. 
+• Prefer chunked reads for large binary content. 
+• Avoid loading entire files in memory unless required. 
+• Use goroutines for parallel I/O (carefully). 
+Golang File Handling Mastery 
+Part 4:     
+Error Handling, Permissions & Pro Engineering Practices 
+Robust Error Handling 
+Always check every file-related operation for errors. You can use 
+pattern helpers: 
+func check(err error) { 
+if err != nil { 
+log.Fatal(err) 
+} 
+} 
+Then apply: 
+f
+ ile, err := os.Open("demo.txt") 
+check(err) 
+File Permission Bits (Linux/Unix) 
+When creating files, always specify secure permissions: 
+f
+ ile, err := os.OpenFile("secret.txt", os.O_CREATE|os.O_WRONLY, 
+0600) // rw------- 
+// Common safe mode: 0644 or 0600 
+Mode Meaning 
+0644 Owner can read/write, others read-only 
+0600 Only owner can read/write 
+0777 Everyone has full access (dangerous!) 
+Temporary Files 
+For creating temp files securely: 
+tmpFile, err := os.CreateTemp("", "example-*.txt") 
+defer os.Remove(tmpFile.Name()) // Clean up 
+Packaging Best Practices 
+• Keep I/O code separate from business logic. 
+• Wrap file I/O in interfaces (for unit testing). 
+• Handle errors gracefully—log them, don’t crash unless 
+necessary. 
+• Use context or timeouts if doing file work in goroutines. 
+Backend Pro Tips 
+• Use log package for I/O diagnostics. 
+• For config files, use os.Getenv, os.ReadFile + JSON/YAML 
+decoding. 
+• Leverage goroutines + channels for parallel file processing when 
+safe. 
+• Always release file handles (defer file.Close() as early as 
+possible). 

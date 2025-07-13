@@ -1,0 +1,75 @@
+Absolutely bestie 😎 — here’s a tidy set of formulas across the four categories you asked for. Perfect for quick reference or showing off your science skills! 🌟
+
+---
+
+### 🌡️ **Temperature Conversions**
+1. **Celsius to Fahrenheit**:  
+   $$F = \frac{9}{5}C + 32$$
+
+2. **Fahrenheit to Celsius**:  
+   $$C = \frac{5}{9}(F - 32)$$
+
+3. **Celsius to Kelvin**:  
+   $$K = C + 273.15$$
+
+4. **Kelvin to Celsius**:  
+   $$C = K - 273.15$$
+
+5. **Fahrenheit to Kelvin**:  
+   $$K = \frac{5}{9}(F - 32) + 273.15$$
+
+---
+
+### 📏 **Distance Conversions**
+1. **Kilometers to Miles**:  
+   $$mi = km \times 0.621371$$
+
+2. **Miles to Kilometers**:  
+   $$km = mi \times 1.60934$$
+
+3. **Meters to Feet**:  
+   $$ft = m \times 3.28084$$
+
+4. **Feet to Meters**:  
+   $$m = ft \times 0.3048$$
+
+5. **Inches to Centimeters**:  
+   $$cm = in \times 2.54$$
+
+---
+
+### ⚖️ **Mass Conversions**
+1. **Kilograms to Pounds**:  
+   $$lb = kg \times 2.20462$$
+
+2. **Pounds to Kilograms**:  
+   $$kg = lb \times 0.453592$$
+
+3. **Grams to Ounces**:  
+   $$oz = g \times 0.035274$$
+
+4. **Ounces to Grams**:  
+   $$g = oz \times 28.3495$$
+
+5. **Tonnes to Kilograms**:  
+   $$kg = t \times 1000$$
+
+---
+
+### ⚡ **Electricity Conversions**
+1. **Ohm’s Law (Voltage)**:  
+   $$V = I \times R$$
+
+2. **Ohm’s Law (Current)**:  
+   $$I = \frac{V}{R}$$
+
+3. **Ohm’s Law (Resistance)**:  
+   $$R = \frac{V}{I}$$
+
+4. **Power Formula**:  
+   $$P = V \times I$$
+
+5. **Energy Consumption** (in kilowatt-hours):  
+   $$\text{kWh} = \frac{P \times t}{1000}$$  
+   _(Where power is in watts, time in hours)_
+
