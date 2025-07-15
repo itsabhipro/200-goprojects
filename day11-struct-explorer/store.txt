@@ -1,0 +1,3 @@
+Field: Name, Type: string, Value: 
+Field: Emails, Type: []string, Value: []
+Field: Authors, Type: []main.User, Value: []
