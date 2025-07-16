@@ -7,19 +7,7 @@ import (
 	"strings"
 )
 
-type User struct {
-	Username string `json:"username"`
-	Name     string `json:"name"`
-	Password string
-}
-type Test struct {
-	Name    string   `json:"name"`
-	Emails  []string `json:"email"`
-	Authors []User   `json:"authors"`
-}
-
 func main() {
-	test := Test{}
 	isRunning := true
 
 	for isRunning {
@@ -31,7 +19,17 @@ func main() {
 		}
 		switch selection {
 		case "1":
-			inspectedContent := struc.InsepectStruct(test)
+			name := utils.ScanfString("Enter struct name")
+			if name == "" || name == " " {
+				fmt.Println("Please input valid name")
+				continue
+			}
+			gStruct, err := structRegistry[name]
+			if !err {
+				fmt.Println("Struct not Found")
+				continue
+			}
+			inspectedContent := struc.InsepectStruct(gStruct)
 			fmt.Printf("-------- Your inspected Struct is here ---------\n\n")
 			fmt.Println(inspectedContent)
 			choice := utils.ScanfString("Do you want to write inspected struct into file (y-yes/anykey-No)")
@@ -44,6 +42,12 @@ func main() {
 			}
 			continue
 		case "2":
+			name := utils.ScanfString("Enter struct name")
+			test, ok := structRegistry[name]
+			if !ok {
+				fmt.Println("Struct not found.")
+				continue
+			}
 			confirm := utils.ScanfString("Do you want write into json file? (y-yes/press any key)")
 			if strings.ToLower(confirm) == "y" {
 				confirm := utils.ScanfString("Do you want to write pretty json.(y-yes)")
@@ -67,6 +71,7 @@ func main() {
 			}
 			continue
 		case "3":
+			struc.ExploreFile()
 		case "4":
 			isRunning = false
 			return
